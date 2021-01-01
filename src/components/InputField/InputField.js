@@ -6,20 +6,22 @@ const {width} = Dimensions.get('screen');
 
 export default function InputField({
   numbers,
-  UpperCase,
+  upperCase,
   onChangeText,
+  letters,
+  characters,
   styleInput,
   ...props
 }) {
   const [state, setState] = useState({
-    upperCase: UpperCase,
+    mayus: upperCase,
     progress: 0,
     total: 4,
     number: numbers,
-    characters: 2,
-    letter: 3,
+    characters_: characters,
+    letter: letters,
     numberValidate: false,
-    upperCaseValidate: false,
+    mayusValidate: false,
     charactersValidate: false,
     letterValidate: false,
     animated: new Animated.Value(0),
@@ -64,13 +66,13 @@ export default function InputField({
     let newValue = value.split(/\W/).join('');
     newValue = newValue.split(/_/).join('');
     let length = value.length - newValue.length;
-    if (length >= state.characters && !state.charactersValidate) {
+    if (length >= state.characters_ && !state.charactersValidate) {
       setState({
         ...state,
         progress: state.progress + 1,
         charactersValidate: true,
       });
-    } else if (length < state.characters && state.charactersValidate) {
+    } else if (length < state.characters_ && state.charactersValidate) {
       setState({
         ...state,
         progress: state.progress - 1,
@@ -82,17 +84,17 @@ export default function InputField({
   const handleValidateUpperCase = (value) => {
     let newValue = value.split(/[A-Z]/).join('');
     let length = value.length - newValue.length;
-    if (length >= state.upperCase && !state.upperCaseValidate) {
+    if (length >= state.mayus && !state.mayusValidate) {
       setState({
         ...state,
         progress: state.progress + 1,
-        upperCaseValidate: true,
+        mayusValidate: true,
       });
-    } else if (length < state.upperCase && state.upperCaseValidate) {
+    } else if (length < state.mayus && state.mayusValidate) {
       setState({
         ...state,
         progress: state.progress - 1,
-        upperCaseValidate: false,
+        mayusValidate: false,
       });
     }
   };
@@ -108,15 +110,12 @@ export default function InputField({
   };
 
   return (
-    <View
-      style={{
-        flexWrap: 'wrap',
-      }}>
+    <View>
       <TextInput
-        {...props}
         style={{...style.input}}
         secureTextEntry={true}
         onChangeText={(text) => handleValidate(text)}
+        {...props}
       />
       <View ref={state.ref} style={style.state} />
       <Animated.View
