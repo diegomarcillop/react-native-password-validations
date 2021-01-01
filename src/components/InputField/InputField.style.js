@@ -6,6 +6,7 @@ export const style = StyleSheet.create({
     borderWidth: 1,
     letterSpacing: 2,
     width: '100%',
+    borderRadius: 6,
   },
   state: {
     backgroundColor: '#FFE1D7',
